@@ -9,7 +9,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 public class Main {
 
     public boolean regex(String pattern, String s) {
-        return false;
+        return s.contains(pattern);
     }
 
     @Test
