@@ -10,6 +10,7 @@ public class Main {
 
     public boolean regex(String pattern, String s) {
 
+
         for (int indexOfPattern = 0; indexOfPattern < pattern.length(); indexOfPattern++){
             char charOfPattern = pattern.charAt(indexOfPattern);
 
@@ -18,8 +19,15 @@ public class Main {
                 char lookAheadChar =  pattern.charAt(indexOfPattern + 1);
                 // a Star "nulls" the result of the previous character and
                 // therefore this pattern is _always_ found and true.
+                // we need to handle char + '*' in one step
                 if(lookAheadChar == '*'){
                     return true;
+                } else {
+                    int indexOfCharOfPatternFound = s.indexOf(charOfPattern);
+                    if(indexOfCharOfPatternFound < 0)
+                        return false;
+                    else
+                        return regex(pattern.substring(indexOfPattern, pattern.length() -1), s.substring(indexOfCharOfPatternFound, s.length() -1));
                 }
             }
             else {
@@ -65,6 +73,11 @@ public class Main {
         assertThat(regex("a*", "ba"), equalTo(true));
         assertThat(regex("a*", "b"), equalTo(true));
         assertThat(regex("a*", "bb"), equalTo(true));
+    }
+
+    @Test
+    public void doubleChar(){
+        assertThat(regex("aa", "a"), equalTo(false));
     }
 
 }
