@@ -8,76 +8,45 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 public class Main {
 
-    public boolean regex(String pattern, String s) {
+    public boolean regex(String pattern, String word) {
 
 
-        for (int indexOfPattern = 0; indexOfPattern < pattern.length(); indexOfPattern++){
-            char charOfPattern = pattern.charAt(indexOfPattern);
-
-
-            if(indexOfPattern < pattern.length() -1) {
-                char lookAheadChar =  pattern.charAt(indexOfPattern + 1);
-                // a Star "nulls" the result of the previous character and
-                // therefore this pattern is _always_ found and true.
-                // we need to handle char + '*' in one step
-                if(lookAheadChar == '*'){
+        for(int indexInPattern = 0; indexInPattern < pattern.length(); indexInPattern++){
+            char ofPattern = pattern.charAt(indexInPattern);
+            int indexOfCharFound = word.indexOf(ofPattern);
+            if (indexOfCharFound >= 0){
+                if(indexInPattern +1 < pattern.length())
+                    return regex(pattern.substring(indexInPattern+1), word.substring(indexOfCharFound+1));
+                else
                     return true;
-                } else {
-                    int indexOfCharOfPatternFound = s.indexOf(charOfPattern);
-                    if(indexOfCharOfPatternFound < 0)
-                        return false;
-                    else
-                        return regex(pattern.substring(indexOfPattern, pattern.length() -1), s.substring(indexOfCharOfPatternFound, s.length() -1));
-                }
-            }
-            else {
-                // this actually covers only the last char of the pattern or the pattern with a single char.
-                if(charOfPattern == '*') {
-                   return false;
-                } else {
-                    int indexOfCharOfPattern = s.indexOf(charOfPattern);
-                    if(indexOfCharOfPattern < 0)
-                        return false;
-                }
+            } else {
+                return false;
             }
         }
 
-        return true;
+        return false;
+
     }
 
     @Test
-    public void singleChar() {
+    public void charLen1WorLen1Okay() {
         assertThat(regex("a", "a"), equalTo(true));
-        assertThat(regex("a", "aa"), equalTo(true));
-        assertThat(regex("a", "ab"), equalTo(true));
-        assertThat(regex("a", "ba"), equalTo(true));
-        assertThat(regex("a", "b"), equalTo(false));
-        assertThat(regex("a", "bb"), equalTo(false));
     }
 
     @Test
-    public void singleStar(){
-        assertThat(regex("*", "a"), equalTo(false));
-        assertThat(regex("*", "aa"), equalTo(false));
-        assertThat(regex("*", "ab"), equalTo(false));
-        assertThat(regex("*", "ba"), equalTo(false));
-        assertThat(regex("*", "b"), equalTo(false));
-        assertThat(regex("*", "bb"), equalTo(false));
+    public void charLen1WorLen1Fail() {
+        assertThat(regex("b", "a"), equalTo(false));
     }
 
     @Test
-    public void singleCharAndStar(){
-        assertThat(regex("a*", "a"), equalTo(true));
-        assertThat(regex("a*", "aa"), equalTo(true));
-        assertThat(regex("a*", "ab"), equalTo(true));
-        assertThat(regex("a*", "ba"), equalTo(true));
-        assertThat(regex("a*", "b"), equalTo(true));
-        assertThat(regex("a*", "bb"), equalTo(true));
+    public void charLen1WorLen2Fail() {
+        assertThat(regex("ab", "aa"), equalTo(false));
     }
 
+
     @Test
-    public void doubleChar(){
-        assertThat(regex("aa", "a"), equalTo(false));
+    public void charLen2WorLen1Fail() {
+        assertThat(regex("ab", "a"), equalTo(false));
     }
 
 }
