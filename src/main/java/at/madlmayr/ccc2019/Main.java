@@ -13,12 +13,24 @@ public class Main {
         for (int indexOfPattern = 0; indexOfPattern < pattern.length(); indexOfPattern++){
             char charOfPattern = pattern.charAt(indexOfPattern);
 
-            if(charOfPattern == '*') {
 
-            } else {
-                int indexOfCharOfPattern = s.indexOf(charOfPattern);
-                if(indexOfCharOfPattern < 0)
-                    return false;
+            if(indexOfPattern < pattern.length() -1) {
+                char lookAheadChar =  pattern.charAt(indexOfPattern + 1);
+                // a Star "nulls" the result of the previous character and
+                // therefore this pattern is _always_ found and true.
+                if(lookAheadChar == '*'){
+                    return true;
+                }
+            }
+            else {
+                // this actually covers only the last char of the pattern or the pattern with a single char.
+                if(charOfPattern == '*') {
+                   return false;
+                } else {
+                    int indexOfCharOfPattern = s.indexOf(charOfPattern);
+                    if(indexOfCharOfPattern < 0)
+                        return false;
+                }
             }
         }
 
@@ -37,13 +49,22 @@ public class Main {
 
     @Test
     public void singleStar(){
-        assertThat(regex("*", "a"), equalTo(true));
-        assertThat(regex("*", "aa"), equalTo(true));
-        assertThat(regex("*", "ab"), equalTo(true));
-        assertThat(regex("*", "ba"), equalTo(true));
-        assertThat(regex("*", "b"), equalTo(true));
-        assertThat(regex("*", "bb"), equalTo(true));
+        assertThat(regex("*", "a"), equalTo(false));
+        assertThat(regex("*", "aa"), equalTo(false));
+        assertThat(regex("*", "ab"), equalTo(false));
+        assertThat(regex("*", "ba"), equalTo(false));
+        assertThat(regex("*", "b"), equalTo(false));
+        assertThat(regex("*", "bb"), equalTo(false));
     }
 
+    @Test
+    public void singleCharAndStar(){
+        assertThat(regex("a*", "a"), equalTo(true));
+        assertThat(regex("a*", "aa"), equalTo(true));
+        assertThat(regex("a*", "ab"), equalTo(true));
+        assertThat(regex("a*", "ba"), equalTo(true));
+        assertThat(regex("a*", "b"), equalTo(true));
+        assertThat(regex("a*", "bb"), equalTo(true));
+    }
 
 }
