@@ -8,8 +8,21 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 public class Main {
 
-    public boolean regex(String pattern, String word) {
 
+    public static void main(final String[] args){
+        if(args == null || args.length != 2) {
+            System.out.println("Usage: java -jar ccc-2019 <pattern> <word>");
+            return;
+        }
+
+        if(regex(args[0], args[1]))
+            System.out.println(String.format("Word '%s' is matched by pattern '%s'", args[0], args[1]));
+        else
+            System.out.println(String.format("Word '%s' is NOT matched by pattern '%s'", args[0], args[1]));
+    }
+
+
+    public static boolean regex(String pattern, String word) {
         // Case: If pattern is already empty, but we still have chars, this must fail.
         if (pattern.length() == 0 && word.length() > 0)
             return false;
@@ -19,6 +32,7 @@ public class Main {
         // Case: if pattern and word are both '', then this okay
         else if (pattern.length() == 0 && word.length() == 0)
             return true;
+        // Case: all cases, where we have characters in pattern and word
         else {
             if (pattern.charAt(0) == word.charAt(0) || pattern.charAt(0) == '.') {
                 if (isNextCharAStar(pattern)) {
@@ -32,11 +46,11 @@ public class Main {
         }
     }
 
-    private boolean isNextCharAStar(String pattern){
+    private static boolean isNextCharAStar(String pattern){
         return pattern.length() > 1 && pattern.charAt(1) == '*';
     }
 
-    private boolean handleNextCharIsAStar(String pattern, String word){
+    private static boolean handleNextCharIsAStar(String pattern, String word){
         if (isNextCharAStar(pattern)) {
             return regex(pattern.substring(2), word);
         } else {

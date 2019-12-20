@@ -2,6 +2,24 @@
 
 An attempt in Java to solve this challenge https://gist.github.com/ginogravanis/a2cf6f89c562766b25b25fbda72f2bd6
 
+
+## How to build
+
+Make sure you Jave and Maven installed. Then run
+
+```
+mvn clean package
+```
+
+### How to run
+
+In `/target` there is now a JAR file, which you can run
+
+```
+java -jar ccc-2019 <pattern> <word>
+```
+
+
 # License
 
 Copyright 2018 Gerald Madlmayr
