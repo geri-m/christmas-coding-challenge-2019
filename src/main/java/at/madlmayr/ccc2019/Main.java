@@ -15,11 +15,7 @@ public class Main {
             return false;
         // Case: if we have a pattern but word is '', check if we are in '*' section and decide.
         else if (pattern.length() > 0 && word.length() == 0)
-            if (isNextCharAStar(pattern)) {
-                return skipStarSegmentofPattern(pattern, word);
-            } else {
-                return false;
-            }
+            return handleNextCharIsAStar(pattern, word);
         // Case: if pattern and word are both '', then this okay
         else if (pattern.length() == 0 && word.length() == 0)
             return true;
@@ -31,11 +27,7 @@ public class Main {
                     return regex(pattern.substring(1), word.substring(1));
                 }
             } else {
-                if (isNextCharAStar(pattern)) {
-                    return skipStarSegmentofPattern(pattern, word);
-                } else {
-                    return false;
-                }
+                return handleNextCharIsAStar(pattern, word);
             }
         }
     }
@@ -48,8 +40,12 @@ public class Main {
         return pattern.length() > 1 && pattern.charAt(1) == '*';
     }
 
-    private boolean skipStarSegmentofPattern(String pattern, String word){
-        return regex(pattern.substring(2), word);
+    private boolean handleNextCharIsAStar(String pattern, String word){
+        if (isNextCharAStar(pattern)) {
+            return regex(pattern.substring(2), word);
+        } else {
+            return false;
+        }
     }
 
     @Test
