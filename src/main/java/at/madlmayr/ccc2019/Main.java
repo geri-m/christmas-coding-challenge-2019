@@ -24,21 +24,16 @@ public class Main {
         else if (pattern.length() == 0 && word.length() == 0)
             return true;
         else {
-            // do a look ahead.
-            if (isNextCharAStar(pattern)) {
-                // if the current pattern char, matches the word, perfect
-                // go on, but don't change the pattern.
-                if (compareFirstChars(pattern, word)) {
+            if (compareFirstChars(pattern, word)) {
+                if (isNextCharAStar(pattern)) {
                     return regex(pattern, word.substring(1));
                 } else {
-                    return skipStarSegmentofPattern(pattern, word);
+                    return regex(pattern.substring(1), word.substring(1));
                 }
             } else {
-                // if there is a match with the current char, run the algorithm again
-                if (compareFirstChars(pattern, word)) {
-                    return regex(pattern.substring(1), word.substring(1));
+                if (isNextCharAStar(pattern)) {
+                    return skipStarSegmentofPattern(pattern, word);
                 } else {
-                    // if there is no match at the current char, fail.
                     return false;
                 }
             }
