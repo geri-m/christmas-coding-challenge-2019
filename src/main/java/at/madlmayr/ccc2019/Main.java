@@ -20,7 +20,7 @@ public class Main {
         else if (pattern.length() == 0 && word.length() == 0)
             return true;
         else {
-            if (compareFirstChars(pattern, word)) {
+            if (pattern.charAt(0) == word.charAt(0) || pattern.charAt(0) == '.') {
                 if (isNextCharAStar(pattern)) {
                     return regex(pattern, word.substring(1));
                 } else {
@@ -30,10 +30,6 @@ public class Main {
                 return handleNextCharIsAStar(pattern, word);
             }
         }
-    }
-
-    private boolean compareFirstChars(String pattern, String word){
-        return pattern.charAt(0) == word.charAt(0) || pattern.charAt(0) == '.';
     }
 
     private boolean isNextCharAStar(String pattern){
